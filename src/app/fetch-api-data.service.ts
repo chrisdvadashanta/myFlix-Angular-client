@@ -5,7 +5,7 @@ import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 //Declaring the api url that will provide data for the client app
-const apiUrl = 'https://movie-api-es93.herokuapp.com/';
+const apiUrl = 'https://guarded-peak-19726.herokuapp.com/';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +17,6 @@ export class FetchApiDataService {
 
   /**
    * Making the api call for the user registration endpoint
-   * @param userDetails 
-   * @returns an observable with the user
    */
   public userRegistration(userDetails: any): Observable<any> {
     return this.http.post(apiUrl + 'users', userDetails).pipe(
@@ -28,8 +26,6 @@ export class FetchApiDataService {
 
   /**
    * Making the api call for the user login endpoint
-   * @param userDetails 
-   * @returns an observable with the user
    */
   public userLogin(userDetails: any): Observable<any> {
     return this.http.post(apiUrl + 'login?' + new URLSearchParams(userDetails), {}).pipe(
@@ -39,7 +35,6 @@ export class FetchApiDataService {
 
   /**
    * Making the api call for the get all movies endpoint
-   * @returns an observable with an array of movies
    */
   getAllMovies(): Observable<any> {
     const token = localStorage.getItem('token');
@@ -253,9 +248,9 @@ export class FetchApiDataService {
     } else {
       console.error(
         `Error Status code ${error.status}, ` +
-        `Error body is: ${error.error}`);
+        `Error body is: ${JSON.stringify(error.error)}`);
     }
-
     return throwError('Something bad happened; please try again later.');
-  }
+}
+
 }

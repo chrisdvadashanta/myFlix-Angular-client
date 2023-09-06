@@ -20,24 +20,24 @@ export class MovieCardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const user = localStorage.getItem('user');
-
-    if (!user) {
+    const userItem = localStorage.getItem('user');
+    
+    if (!userItem) {
       this.router.navigate(['welcome']);
       return;
     }
-
+  
+    const user = JSON.parse(userItem) || { FavoriteMovies: [] };
     this.getMovies();
   }
-
+  
   /**
    * calls the getAllMovies api and sets the value
-   * @param id the movie id
    */
   getMovies(): void {
     this.fetchApiData.getAllMovies().subscribe((resp: any) => {
       this.movies = resp;
-
+      console.log("movies", this.movies);
       return this.movies;
     });
   }
@@ -75,8 +75,8 @@ export class MovieCardComponent implements OnInit {
 
   /**
    * calls the deleteFavoriteMovie api and shows the snackbar if successful
-   * @param id the movie id
    */
+
   removeFavorite(id: string): void {
     this.fetchApiData.deleteFavoriteMovie(id).subscribe(() => {
       this.snackBar.open('removed from favorites', 'OK', {
