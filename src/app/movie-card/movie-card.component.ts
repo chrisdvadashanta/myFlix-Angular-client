@@ -32,7 +32,7 @@ export class MovieCardComponent implements OnInit {
   }
   
   /**
-   * calls the getAllMovies api and sets the value
+   * calls the getAllMovies Api and sets the value
    */
   getMovies(): void {
     this.fetchApiData.getAllMovies().subscribe((resp: any) => {
