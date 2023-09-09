@@ -183,7 +183,7 @@ export class FetchApiDataService {
     const token = localStorage.getItem('token');
     const user = JSON.parse(localStorage.getItem('user') || '{}');
 
-    user.FavoriteMovies.push(movieId);
+    user.favorites.push(movieId);
     localStorage.setItem('user', JSON.stringify(user));
     
     return this.http.put(apiUrl + `users/${user.Username}/${movieId}`, {}, {
@@ -206,9 +206,9 @@ export class FetchApiDataService {
     const token = localStorage.getItem('token');
     const user = JSON.parse(localStorage.getItem('user') || '{}');
 
-    const index = user.FavoriteMovies.indexOf(movieId);
+    const index = user.favorites.indexOf(movieId);
     if (index >= 0) {
-      user.FavoriteMovies.splice(index, 1);
+      user.favorites.splice(index, 1);
     }
     localStorage.setItem('user', JSON.stringify(user));
 
@@ -230,7 +230,7 @@ export class FetchApiDataService {
   isFavoriteMovie(movieId: string): boolean {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     if (user) {
-      return user.FavoriteMovies.includes(movieId);
+      return user.favorites.includes(movieId);
     }
 
     return false;
