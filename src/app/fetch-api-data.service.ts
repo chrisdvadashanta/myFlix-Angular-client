@@ -17,6 +17,8 @@ export class FetchApiDataService {
 
   /**
    * Making the api call for the user registration endpoint
+   * @param userDetails 
+   * @returns an observable with the user
    */
   public userRegistration(userDetails: any): Observable<any> {
     return this.http.post(apiUrl + 'users', userDetails).pipe(
@@ -26,6 +28,8 @@ export class FetchApiDataService {
 
   /**
    * Making the api call for the user login endpoint
+   * @param userDetails 
+   * @returns an observable with the user
    */
   public userLogin(userDetails: any): Observable<any> {
     return this.http.post(apiUrl + 'login?' + new URLSearchParams(userDetails), {}).pipe(
@@ -35,6 +39,7 @@ export class FetchApiDataService {
 
   /**
    * Making the api call for the get all movies endpoint
+   * @returns an observable with an array of movies
    */
   getAllMovies(): Observable<any> {
     const token = localStorage.getItem('token');
@@ -134,7 +139,7 @@ export class FetchApiDataService {
       })
     }).pipe(
       map(this.extractResponseData),
-      map((data) => data.FavoriteMovies),
+      map((data) => data.favorites),
       catchError(this.handleError)
     );
   }
@@ -183,7 +188,7 @@ export class FetchApiDataService {
     const token = localStorage.getItem('token');
     const user = JSON.parse(localStorage.getItem('user') || '{}');
 
-    user.FavoriteMovies.push(movieId);
+    user.favorites.push(movieId);
     localStorage.setItem('user', JSON.stringify(user));
     
     return this.http.put(apiUrl + `users/${user.Username}/${movieId}`, {}, {
@@ -206,9 +211,9 @@ export class FetchApiDataService {
     const token = localStorage.getItem('token');
     const user = JSON.parse(localStorage.getItem('user') || '{}');
 
-    const index = user.FavoriteMovies.indexOf(movieId);
+    const index = user.favorites.indexOf(movieId);
     if (index >= 0) {
-      user.FavoriteMovies.splice(index, 1);
+      user.favorites.splice(index, 1);
     }
     localStorage.setItem('user', JSON.stringify(user));
 
@@ -230,7 +235,7 @@ export class FetchApiDataService {
   isFavoriteMovie(movieId: string): boolean {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     if (user) {
-      return user.FavoriteMovies.includes(movieId);
+      return user.favorites.includes(movieId);
     }
 
     return false;
@@ -248,9 +253,9 @@ export class FetchApiDataService {
     } else {
       console.error(
         `Error Status code ${error.status}, ` +
-        `Error body is: ${JSON.stringify(error.error)}`);
+        `Error body is: ${error.error}`);
     }
-    return throwError('Something bad happened; please try again later.');
-}
 
+    return throwError('Something bad happened; please try again later.');
+  }
 }
